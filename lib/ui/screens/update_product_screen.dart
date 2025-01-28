@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:crud_app_ostad/models/product.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -22,6 +21,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   final TextEditingController _quantityTEController = TextEditingController();
   final TextEditingController _priceTEController = TextEditingController();
   final TextEditingController _totalPriceTEController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _updateProductInProgress = false;
 
   @override
@@ -44,7 +44,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(8),
           child: _buildProductForm(),
         ),
       ),
@@ -53,6 +53,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
 
   Widget _buildProductForm() {
     return Form(
+      key: _formKey,
       child: Column(
         children: [
           TextFormField(
@@ -172,10 +173,8 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(requestBody),
     );
-    print(response.statusCode);
-    print(response.body);
     _updateProductInProgress = false;
-
+    setState(() {});
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Product has been Update!')));

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -31,7 +30,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(8),
           child: _buildProductForm(),
         ),
       ),
@@ -134,15 +133,17 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
             height: 16,
           ),
           Visibility(
-            visible: _addNewProductInProgress==false,
-            replacement: const Center(child: CircularProgressIndicator(),),
+            visible: _addNewProductInProgress == false,
+            replacement: const Center(
+              child: CircularProgressIndicator(),
+            ),
             child: ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _addNewProduct();
                   }
                 },
-                child: const Text('Add Product')),
+                child: const Text('Add Product'),),
           ),
         ],
       ),
@@ -167,17 +168,23 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(requestBody),
     );
-    print(response.statusCode);
-    print(response.body);
-    _addNewProductInProgress=false;
+    _addNewProductInProgress = false;
+    setState(() {});
+
     if (response.statusCode == 200) {
       _clearTextFields();
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('New product Added!')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('New product Added!'),
+        ),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('New product Add failed! try again')));
+        const SnackBar(
+          content: Text('New product Add failed! try again'),
+        ),
+      );
     }
   }
 

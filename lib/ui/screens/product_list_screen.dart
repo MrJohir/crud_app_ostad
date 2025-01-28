@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:crud_app_ostad/models/product.dart';
 import 'package:crud_app_ostad/ui/screens/add_new_product_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -17,12 +16,13 @@ class ProductListScreen extends StatefulWidget {
 
 class _ProductListScreenState extends State<ProductListScreen> {
   List<Product> productList = [];
-  bool _getProductListInProgress=false;
-@override
+  bool _getProductListInProgress = false;
+  @override
   void initState() {
     _getProductList();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,23 +30,28 @@ class _ProductListScreenState extends State<ProductListScreen> {
         appBar: AppBar(
           title: const Text('Product List'),
           actions: [
-            IconButton(onPressed: (){}, icon: const Icon(Icons.refresh)),
+            IconButton(onPressed: () {
+              _getProductList();
+            }, icon: const Icon(Icons.refresh)),
           ],
         ),
         body: RefreshIndicator(
-          onRefresh: ()async{
+          onRefresh: () async {
             _getProductList();
           },
           child: Visibility(
-            visible: _getProductListInProgress==false,
+            visible: _getProductListInProgress == false,
             replacement: const Center(
               child: CircularProgressIndicator(),
             ),
             child: ListView.builder(
                 itemCount: productList.length,
                 itemBuilder: (context, index) {
-                  return  ProductItem(
+                  return ProductItem(
                     product: productList[index],
+                    onDeleteTab: (){
+                      _deleteShowDialog(productList[index], index);
+                    },
                   );
                 }),
           ),
@@ -62,9 +67,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
   }
 
   Future<void> _getProductList() async {
-  productList.clear();
-  _getProductListInProgress=true;
-  setState(() {});
+    productList.clear();
+    _getProductListInProgress = true;
+    setState(() {});
     Uri uri = Uri.parse('https://crud.teamrabbil.com/api/v1/ReadProduct');
     Response response = await get(uri);
     print(response.statusCode);
@@ -87,7 +92,45 @@ class _ProductListScreenState extends State<ProductListScreen> {
       }
       setState(() {});
     }
-    _getProductListInProgress=false;
+    _getProductListInProgress = false;
+    setState(() {});
+  }
+
+  void _deleteShowDialog(Product product,int index){
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        title: const Text('Delete!'),
+        content: const Text('Are you sure you want to delete this product?'),
+        actions: [
+          ElevatedButton(onPressed: (){
+            _deleteProductItem('${product.id}', index);
+            Navigator.pop(context);
+          }, child: const Text('Yes')),
+          const SizedBox(width: 16,),
+          ElevatedButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: const Text('Yes')),
+        ],
+      );
+    },
+    );
+  }
+
+  Future<void> _deleteProductItem(String id, int index) async {
+    _getProductListInProgress = true;
+    setState(() {});
+    Uri uri = Uri.parse('https://crud.teamrabbil.com/api/v1/DeleteProduct/$id');
+    Response response = await get(uri);
+    _getProductListInProgress = false;
+    setState(() {});
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Delete Successful'),),);
+      productList.removeAt(index);
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Delete Failed'),),);
+    }
     setState(() {});
   }
 }
