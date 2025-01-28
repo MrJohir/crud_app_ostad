@@ -109,7 +109,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           const SizedBox(width: 16,),
           ElevatedButton(onPressed: (){
             Navigator.pop(context);
-          }, child: const Text('Yes')),
+          }, child: const Text('No')),
         ],
       );
     },
