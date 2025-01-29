@@ -41,10 +41,11 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Update Product'),
+        backgroundColor: Colors.black12,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(16),
           child: _buildProductForm(),
         ),
       ),
@@ -59,6 +60,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
           TextFormField(
             controller: _nameTEController,
             decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               hintText: 'name',
               labelText: 'Product Name',
             ),
@@ -69,9 +71,11 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
               return null;
             },
           ),
+          const SizedBox(height: 8,),
           TextFormField(
             controller: _codeTEController,
             decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               hintText: 'code',
               labelText: 'Product Code',
             ),
@@ -82,9 +86,11 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
               return null;
             },
           ),
+          const SizedBox(height: 8,),
           TextFormField(
             controller: _imageTEController,
             decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               hintText: 'url',
               labelText: 'Image',
             ),
@@ -95,9 +101,11 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
               return null;
             },
           ),
+          const SizedBox(height: 8,),
           TextFormField(
             controller: _quantityTEController,
             decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               hintText: 'quantity',
               labelText: 'Quantity',
             ),
@@ -108,9 +116,11 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
               return null;
             },
           ),
+          const SizedBox(height: 8,),
           TextFormField(
             controller: _priceTEController,
             decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               hintText: 'price',
               labelText: 'Price',
             ),
@@ -121,9 +131,11 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
               return null;
             },
           ),
+          const SizedBox(height: 8,),
           TextFormField(
             controller: _totalPriceTEController,
             decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               hintText: 'total price',
               labelText: 'Total Price',
             ),
@@ -143,10 +155,13 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
               child: CircularProgressIndicator(),
             ),
             child: ElevatedButton(
-                onPressed: () {
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
                   _updateProduct();
-                },
-                child: const Text('Update Product')),
+                }
+              },
+              child: const Text('Update Product'),
+            ),
           ),
         ],
       ),
@@ -177,10 +192,16 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
     setState(() {});
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Product has been Update!')));
+        const SnackBar(
+          content: Text('Product has been Update!'),
+        ),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Product Update failed! try again')));
+        const SnackBar(
+          content: Text('Product Update failed! try again'),
+        ),
+      );
     }
   }
 

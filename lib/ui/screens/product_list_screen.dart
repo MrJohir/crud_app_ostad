@@ -25,43 +25,49 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Product List'),
-          actions: [
-            IconButton(onPressed: () {
-              _getProductList();
-            }, icon: const Icon(Icons.refresh)),
-          ],
-        ),
-        body: RefreshIndicator(
-          onRefresh: () async {
-            _getProductList();
-          },
-          child: Visibility(
-            visible: _getProductListInProgress == false,
-            replacement: const Center(
-              child: CircularProgressIndicator(),
-            ),
-            child: ListView.builder(
-                itemCount: productList.length,
-                itemBuilder: (context, index) {
-                  return ProductItem(
-                    product: productList[index],
-                    onDeleteTab: (){
-                      _deleteShowDialog(productList[index], index);
-                    },
-                  );
-                }),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Product List'),
+        backgroundColor: Colors.black12,
+        actions: [
+          IconButton(
+              onPressed: () {
+                _getProductList();
+              },
+              icon: const Icon(Icons.refresh)),
+        ],
+      ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          _getProductList();
+        },
+        child: Visibility(
+          visible: _getProductListInProgress == false,
+          replacement: const Center(
+            child: CircularProgressIndicator(),
           ),
+          child: ListView.builder(
+              itemCount: productList.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Card(
+                    child: ProductItem(
+                      product: productList[index],
+                      onDeleteTab: () {
+                        _deleteShowDialog(productList[index], index);
+                      },
+                    ),
+                  ),
+                );
+              }),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, AddNewProductScreen.name);
-          },
-          child: const Icon(Icons.add),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, AddNewProductScreen.name);
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -96,23 +102,31 @@ class _ProductListScreenState extends State<ProductListScreen> {
     setState(() {});
   }
 
-  void _deleteShowDialog(Product product,int index){
-    showDialog(context: context, builder: (context){
-      return AlertDialog(
-        title: const Text('Delete!'),
-        content: const Text('Are you sure you want to delete this product?'),
-        actions: [
-          ElevatedButton(onPressed: (){
-            _deleteProductItem('${product.id}', index);
-            Navigator.pop(context);
-          }, child: const Text('Yes')),
-          const SizedBox(width: 16,),
-          ElevatedButton(onPressed: (){
-            Navigator.pop(context);
-          }, child: const Text('No')),
-        ],
-      );
-    },
+  void _deleteShowDialog(Product product, int index) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete!'),
+          content: const Text('Are you sure! you want to delete this product?'),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  _deleteProductItem('${product.id}', index);
+                  Navigator.pop(context);
+                },
+                child: const Text('Yes')),
+            const SizedBox(
+              width: 16,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('No')),
+          ],
+        );
+      },
     );
   }
 
@@ -125,11 +139,17 @@ class _ProductListScreenState extends State<ProductListScreen> {
     setState(() {});
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Delete Successful'),),);
+        const SnackBar(
+          content: Text('Delete Successful'),
+        ),
+      );
       productList.removeAt(index);
-    }else{
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Delete Failed'),),);
+        const SnackBar(
+          content: Text('Delete Failed'),
+        ),
+      );
     }
     setState(() {});
   }

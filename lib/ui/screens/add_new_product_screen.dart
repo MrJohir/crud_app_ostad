@@ -27,10 +27,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add New Product'),
+        backgroundColor: Colors.black12,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(16),
           child: _buildProductForm(),
         ),
       ),
@@ -46,6 +47,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
             controller: _nameTEController,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               hintText: 'name',
               labelText: 'Product Name',
             ),
@@ -56,10 +58,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               return null;
             },
           ),
+          const SizedBox(height: 8,),
           TextFormField(
             controller: _codeTEController,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               hintText: 'code',
               labelText: 'Product Code',
             ),
@@ -70,10 +74,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               return null;
             },
           ),
+          const SizedBox(height: 8,),
           TextFormField(
             controller: _imageTEController,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               hintText: 'url',
               labelText: 'Image',
             ),
@@ -84,11 +90,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               return null;
             },
           ),
+          const SizedBox(height: 8,),
           TextFormField(
             controller: _quantityTEController,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               hintText: 'quantity',
               labelText: 'Quantity',
             ),
@@ -99,11 +107,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               return null;
             },
           ),
+          const SizedBox(height: 8,),
           TextFormField(
             controller: _priceTEController,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               hintText: 'price',
               labelText: 'Price',
             ),
@@ -114,11 +124,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               return null;
             },
           ),
+          const SizedBox(height: 8,),
           TextFormField(
             controller: _totalPriceTEController,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               hintText: 'total price',
               labelText: 'Total Price',
             ),
@@ -138,12 +150,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               child: CircularProgressIndicator(),
             ),
             child: ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _addNewProduct();
-                  }
-                },
-                child: const Text('Add Product'),),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _addNewProduct();
+                }
+              },
+              child: const Text('Add Product'),
+            ),
           ),
         ],
       ),
